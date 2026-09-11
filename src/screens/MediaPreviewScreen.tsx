@@ -30,6 +30,22 @@ function VideoPreview({ uri }: { uri: string }) {
   return <VideoView style={styles.media} player={player} nativeControls contentFit="contain" />;
 }
 
+/**
+ * Vuelve a la pantalla anterior solo si expo-router tiene algo en el
+ * historial. Sin esta comprobación, `router.back()` dispara el warning
+ * "The action 'GO_BACK' was not handled by any navigator" cuando /preview
+ * quedó como única pantalla en el stack (por ejemplo, si el usuario ya
+ * presionó "atrás" del sistema mientras el Alert de confirmación seguía
+ * abierto, y el callback async llega después con el stack ya vacío).
+ */
+function goBackSafely() {
+  if (router.canGoBack()) {
+    router.back();
+  } else {
+    router.replace('/');
+  }
+}
+
 const MediaPreviewScreen: React.FC = () => {
   const [params, setParams] = useState<PreviewParams | null>(null);
   const [processing, setProcessing] = useState(false);
@@ -59,7 +75,7 @@ const MediaPreviewScreen: React.FC = () => {
           setProcessing(true);
           const result = await FileService.hideDeviceMedia([item]);
           setProcessing(false);
-          router.back();
+          goBackSafely();
           Alert.alert(
             'Listo',
             result.warnings.length > 0
@@ -82,7 +98,7 @@ const MediaPreviewScreen: React.FC = () => {
           const outcome = await FileService.restoreItem(item);
           setProcessing(false);
           if (outcome.success) {
-            router.back();
+            goBackSafely();
           } else {
             Alert.alert('No se pudo restaurar', outcome.warning ?? 'Error desconocido');
           }
@@ -102,7 +118,7 @@ const MediaPreviewScreen: React.FC = () => {
           setProcessing(true);
           await FileService.deletePermanently(item);
           setProcessing(false);
-          router.back();
+          goBackSafely();
         },
       },
     ]);

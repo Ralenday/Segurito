@@ -7,8 +7,7 @@
  */
 import React, { useCallback, useState } from 'react';
 import { Alert, FlatList, StyleSheet, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import StorageService from '../services/StorageService';
 import FileService from '../services/FileService';
 import { setPendingPreview } from '../services/PreviewStore';

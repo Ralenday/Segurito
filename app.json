@@ -2,6 +2,7 @@
   "expo": {
     "name": "Segurito",
     "slug": "Segurito",
+    "owner": "ralendaykino",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -70,6 +71,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ee57dd23-1062-41f5-9f3e-fba86be63dc4"
+      }
     }
   }
 }
